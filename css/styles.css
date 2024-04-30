@@ -4,7 +4,7 @@ body,
 #main-container {
     height: 100%;
     width: 100%;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: Helvetica, Geneva, Tahoma, sans-serif;
 }
 
 body {
@@ -32,6 +32,7 @@ nav {
 
 .nav-link {
     display: inline-block;
+    margin-right: 20px;
     font-size: .9rem;
 }
 
@@ -94,3 +95,48 @@ nav {
     font-weight: bold;
     font-size: 16px;
 }
+
+.nav-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    width: 700px
+}
+
+.nav-popup-content {
+    position: relative;
+}
+
+.nav-popup-close {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.nav-popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.mapboxgl-popup {
+    max-width: 600px;
+    font:
+        12px/20px 'Helvetica Neue',
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>LL97 Equity Map</title>
+    <title>LL97 Housing Equity Map</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.0/mapbox-gl.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
@@ -13,8 +13,24 @@
 <body>
     <div id="main-container">
         <nav>
-            <div class="title">LL97 Equity Map</div>
+            <div class="title">LL97 Housing Equity Map</div>
+
             <div class="nav-links">
+
+                <a class="nav-link" href="#" onclick="openNavPopup()">About</a>
+
+                <div id="nav-popup" class="nav-popup">
+                    <div class="nav-popup-content">
+                        <span class="nav-popup-close" onclick="closeNavPopup()">&times;</span>
+                        <p class ="title"> About the LL97 Housing Equity Map</p>
+                        <p>Add about text.</p>
+                    </div>
+                </div>
+                <div id="nav-popup-overlay" class="nav-popup-overlay"></div>
+
+                <a class="nav-link" href="https://github.com/cpreeldumas/class-5-project" target="_blank"
+                    rel="noopener noreferrer">Methods</a>
+                    
                 <a class="nav-link" href="https://github.com/cpreeldumas/class-5-project" target="_blank"
                     rel="noopener noreferrer">Source Code</a>
             </div>
@@ -22,11 +38,12 @@
         </nav>
         <div id="content-container">
             <div id="sidebar">
-                <p>This is a simple, responsive layout template for web mapping projects. It can save you some time scaffolding your project so you can focus on everything else.</p>
-                <p>It's fullscreen, and features a top nav, fixed-width sidebar, and main map area.</p>
-                <p>This sidebar will scroll if its content becomes longer than the map.</p>
-                <p>On mobile devices, the orientation of the sidebar and map containers changes to a column, with the
-                    map on top taking 60% of the height, and the sidebar on the bottom.</p>
+                <p>This map categorizes census tracts with LL97-covered buildings by their level of rent burden to find areas where... Click the About page to learn more, or the Methods page for more detail on the data and methodology.</p>
+                <p><strong>Click a Census Tract for details, or</strong>
+                    <button onclick="flyToRandomRisk()">Fly to a Random "A Risk" Census Tract</button>
+                </p>
+                <p>Insert slider for 2024 cap vs 2030 cap</p>
+                <p>Insert table with statistics</p>
             </div>
 
             <div id="map"></div>
