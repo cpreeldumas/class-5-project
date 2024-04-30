@@ -1,11 +1,21 @@
 
-function openNavPopup() {
-    document.getElementById("nav-popup").style.display = "block";
+function openAboutPopup() {
+    document.getElementById("nav-about-popup").style.display = "block";
     document.getElementById("nav-popup-overlay").style.display = "block";
 }
 
-function closeNavPopup() {
-    document.getElementById("nav-popup").style.display = "none";
+function openMethodsPopup() {
+    document.getElementById("nav-methods-popup").style.display = "block";
+    document.getElementById("nav-popup-overlay").style.display = "block";
+}
+
+function closeAboutPopup() {
+    document.getElementById("nav-about-popup").style.display = "none";
+    document.getElementById("nav-popup-overlay").style.display = "none";
+}
+
+function closeMethodsPopup() {
+    document.getElementById("nav-methods-popup").style.display = "none";
     document.getElementById("nav-popup-overlay").style.display = "none";
 }
 
