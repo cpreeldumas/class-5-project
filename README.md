@@ -6,6 +6,9 @@ The map relies on data analysis of the EPA's latest [Energy and Water Data Discl
 
 # Map Home View
 
-The map lets users zoom, pan, and explore the census tracts. When a user clicks on a tract, the tract is highlighted and a table with additional data is dispayed in the left-side pane. A future iteration of this map will display additional data in this table, with a more in-depth exploration of at-risk tracts.
+![Screenshot 2024-05-01 at 10 41 40 PM](https://github.com/cpreeldumas/class-5-project/assets/52207575/b0832b21-52aa-4adc-9288-21e9ad8a5e51)
 
 # Map Interactivity
+The map lets users zoom, pan, and explore the census tracts. When a user clicks on a tract, the tract is highlighted and a table with additional data is dispayed in the left-side pane. A future iteration of this map will display additional data in this table, with a more in-depth exploration of at-risk tracts.
+
+![Screenshot 2024-05-01 at 10 49 55 PM](https://github.com/cpreeldumas/class-5-project/assets/52207575/fb4937c5-0080-4d37-9161-2ca86cd13b45)
