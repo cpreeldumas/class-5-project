@@ -48,14 +48,10 @@ map.on('load', function () {
             'fill-color': [
                 'match',
                 ['get', 'qd_2024'],
-                'stable_highrent',
-                '#757FBD',
-                'stable_lowrent',
-                '#BDC4E3',
-                'disadvantaged',
-                '#F89638',
-                'equipped',
-                '#F9E2B4',
+                'stable_highrent', '#757FBD',
+                'stable_lowrent', '#BDC4E3',
+                'disadvantaged', '#F89638',
+                'equipped', '#F9E2B4',
                 '#ccc'
             ],
             'fill-opacity': 0.9
@@ -63,19 +59,66 @@ map.on('load', function () {
         }
     })
 
+    // Add a layer for highlighting the clicked polygon
+    map.addLayer({
+        id: 'highlighted-tract',
+        type: 'line',
+        source: 'map-data-tract',
+        paint: {
+            'line-color': 'white',
+            'line-width': 2,
+            'line-opacity': 0.8,
+            'line-blur': 0.3
+        },
+        filter: ['==', 'GEOID', ''] // Initially filter to none
+    });
+
     // When a click event occurs on a feature in the states layer,
     // open a popup at the location of the click, with description
     map.on('click', 'map-data-tract-fill', (e) => {
-        new mapboxgl.Popup()
+
+        // Highlight the clicked polygon
+        map.setFilter('highlighted-tract', ['==', 'GEOID', e.features[0].properties.GEOID]);
+
+        // Open a popup with information about the clicked polygon
+        /*new mapboxgl.Popup()
             .setLngLat(e.lngLat)
             .setHTML(`
-                <h3>${e.features[0].properties.GEOID}</h3>
-                    <p>
-                     <strong>Median GHG Intensity:</strong> ${e.features[0].properties.mdn_ghg} kgCO2e/ft2<br>
-                     <strong>Rent Burden:</strong> Median rent is ${e.features[0].properties.rntbrdE} % of household income <br>
-                    </p>
-                    `)
+            <h3>${e.features[0].properties.GEOID}</h3>
+            <p>
+                <strong>Median GHG Intensity:</strong> ${e.features[0].properties.mdn_ghg} kgCO2e/ft2<br>
+                <strong>Rent Burden:</strong> Median rent is ${e.features[0].properties.rntbrdE} % of household income <br>
+            </p>
+        `)
             .addTo(map);
+        */
+
+        // Populate the table with data specific to the clicked polygon
+        const tableData = {
+            "Census Tract": e.features[0].properties.GEOID,
+            "Median GHG Intensity": `${e.features[0].properties.mdn_ghg} kgCO2e/ft2`,
+            "Rent Burden": `Median rent is ${e.features[0].properties.rntbrdE}% of household income`
+        };
+
+        const table = document.getElementById('data-table');
+
+        table.innerHTML = '';
+
+        for (const [key, value] of Object.entries(tableData)) {
+            const row = table.insertRow();
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            cell1.textContent = key;
+            cell2.textContent = value;
+
+            // Add borders to table cells
+            cell1.style.border = '1px solid #ccc';
+            cell2.style.border = '1px solid #ccc';
+            cell1.style.padding = '8px';
+            cell2.style.padding = '8px';
+        }
+
+        document.getElementById('sidebar').style.display = 'block';
     });
 
     // Change the cursor to a pointer when
@@ -90,16 +133,15 @@ map.on('load', function () {
         map.getCanvas().style.cursor = '';
     });
 
-    
+
 
 })
 
 // Fly to Random "At Risk" Tract
-function flyToRandomRisk() {
+/*function flyToRandomRisk() {
     // Filter features based on the "risk" category
-    const riskFeatures = map.queryRenderedFeatures({
-        layers: ['map-data-tract-fill'],
-        filter: ['==', ['get', 'qd_2024'], 'disadvantaged'] 
+    const riskFeatures = map.querySourceFeatures('map-data-tract', {
+        filter: ['==', ['get', 'qd_2024'], 'disadvantaged']
     });
 
     // Check if there are any features in the "risk" category
@@ -117,3 +159,4 @@ function flyToRandomRisk() {
         console.log("No census tracts found in the 'risk' category.");
     }
 }
+*/
