@@ -33,6 +33,7 @@ map.addControl(new mapboxgl.NavigationControl());
 // when the map is finished it's initial load, add sources and layers.
 map.on('load', function () {
 
+
     // add a geojson source for the borough boundaries
     map.addSource('map-data-tract', {
         type: 'geojson',
@@ -54,7 +55,7 @@ map.on('load', function () {
                 'equipped', '#F9E2B4',
                 '#ccc'
             ],
-            'fill-opacity': 0.9
+            'fill-opacity': 0.7
 
         }
     })
@@ -132,6 +133,57 @@ map.on('load', function () {
     map.on('mouseleave', 'map-data-tract-fill', () => {
         map.getCanvas().style.cursor = '';
     });
+
+
+     // Insert the layer beneath any symbol layer.
+     const layers = map.getStyle().layers;
+     const labelLayerId = layers.find(
+         (layer) => layer.type === 'symbol' && layer.layout['text-field']
+     ).id;
+
+     // The 'building' layer in the Mapbox Streets
+     // vector tileset contains building height data
+     // from OpenStreetMap.
+     map.addLayer(
+         {
+             'id': 'add-3d-buildings',
+             'source': 'composite',
+             'source-layer': 'building',
+             'filter': ['==', 'extrude', 'true'],
+             'type': 'fill-extrusion',
+             'minzoom': 15,
+             'paint': {
+                 'fill-extrusion-color': '#aaa',
+
+                 // Use an 'interpolate' expression to
+                 // add a smooth transition effect to
+                 // the buildings as the user zooms in.
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['zoom'],
+                     15,
+                     0,
+                     15.05,
+                     ['get', 'height']
+                 ],
+                 'fill-extrusion-base': [
+                     'interpolate',
+                     ['linear'],
+                     ['zoom'],
+                     15,
+                     0,
+                     15.05,
+                     ['get', 'min_height']
+                 ],
+                 'fill-extrusion-opacity': 0.6
+             }
+         },
+         labelLayerId
+     );
+
+
+    
 
 
 
