@@ -34,13 +34,19 @@ map.addControl(new mapboxgl.NavigationControl());
 map.on('load', function () {
 
 
-    // add a geojson source for the borough boundaries
+    // add a geojson source for choropleth
     map.addSource('map-data-tract', {
         type: 'geojson',
         data: 'data/map_data_tract.geojson',
     })
 
-    // first add the fill layer, using a match expression to give each a unique color based on its boro_code property
+    // Create LabelLayerID for 3D Buildings
+    const layers = map.getStyle().layers;
+    const labelLayerId = layers.find(
+        (layer) => layer.type === 'symbol' && layer.layout['text-field']
+    ).id;
+
+    // first add the fill layer, using a match expression to give each a unique color based on its quadrant property
     map.addLayer({
         id: 'map-data-tract-fill',
         type: 'fill',
@@ -58,7 +64,9 @@ map.on('load', function () {
             'fill-opacity': 0.7
 
         }
-    })
+    },
+    labelLayerId
+)
 
     // Add a layer for highlighting the clicked polygon
     map.addLayer({
@@ -135,55 +143,48 @@ map.on('load', function () {
     });
 
 
-     // Insert the layer beneath any symbol layer.
-     const layers = map.getStyle().layers;
-     const labelLayerId = layers.find(
-         (layer) => layer.type === 'symbol' && layer.layout['text-field']
-     ).id;
+    // The 'building' layer in the Mapbox Streets
+    // vector tileset contains building height data
+    // from OpenStreetMap.
+    map.addLayer(
+        {
+            'id': 'add-3d-buildings',
+            'source': 'composite',
+            'source-layer': 'building',
+            'filter': ['==', 'extrude', 'true'],
+            'type': 'fill-extrusion',
+            'minzoom': 15,
+            'paint': {
+                'fill-extrusion-color': '#aaa',
 
-     // The 'building' layer in the Mapbox Streets
-     // vector tileset contains building height data
-     // from OpenStreetMap.
-     map.addLayer(
-         {
-             'id': 'add-3d-buildings',
-             'source': 'composite',
-             'source-layer': 'building',
-             'filter': ['==', 'extrude', 'true'],
-             'type': 'fill-extrusion',
-             'minzoom': 15,
-             'paint': {
-                 'fill-extrusion-color': '#aaa',
-
-                 // Use an 'interpolate' expression to
-                 // add a smooth transition effect to
-                 // the buildings as the user zooms in.
-                 'fill-extrusion-height': [
-                     'interpolate',
-                     ['linear'],
-                     ['zoom'],
-                     15,
-                     0,
-                     15.05,
-                     ['get', 'height']
-                 ],
-                 'fill-extrusion-base': [
-                     'interpolate',
-                     ['linear'],
-                     ['zoom'],
-                     15,
-                     0,
-                     15.05,
-                     ['get', 'min_height']
-                 ],
-                 'fill-extrusion-opacity': 0.6
-             }
-         },
-         labelLayerId
-     );
+                // Use an 'interpolate' expression to
+                // add a smooth transition effect to
+                // the buildings as the user zooms in.
+                'fill-extrusion-height': [
+                    'interpolate',
+                    ['linear'],
+                    ['zoom'],
+                    15,
+                    0,
+                    15.05,
+                    ['get', 'height']
+                ],
+                'fill-extrusion-base': [
+                    'interpolate',
+                    ['linear'],
+                    ['zoom'],
+                    15,
+                    0,
+                    15.05,
+                    ['get', 'min_height']
+                ],
+                'fill-extrusion-opacity': 0.6
+            }
+        }
+    );
 
 
-    
+
 
 
 
